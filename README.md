@@ -3,7 +3,7 @@ Additional installation instruction for fairchainsx/faircoin-2
 
 ### [Installation by docker](installation_by_docker.md)
 
-### [Installation on Ubuntu18.04](installation_on_ubuntu1804.md)
+### [Installation on Ubuntu18.04](installation_ubuntu1804.md)
 
 Installation procedure tested sucessfully on Ubuntu18.04 but did not work on Ubuntu16.04 because of old libraries in the packages.
 
