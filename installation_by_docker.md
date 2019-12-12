@@ -50,6 +50,11 @@ source ~/.bashrc
 sudo docker container start faircoin-v92001-container && faircoind -daemon
 ~~~
 
+#### Get commandline access
+~~~
+sudo docker attach faircoin-v92001-container
+~~~
+
 #### ***IMPORTANT NOTICE***
 
 If you want reboot the system or stop the container dont forget to stop the deamon before to be sure that all downloaded blockchain data will saved in the container!
