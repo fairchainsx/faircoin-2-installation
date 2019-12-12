@@ -16,8 +16,7 @@ sudo apt-get install -qy \
     libboost-all-dev\
     libevent-dev \
     libdb++-dev \
-    libdb-dev \
-    nano
+    libdb-dev
 
 #######################################
 # download faircoin sources / git
