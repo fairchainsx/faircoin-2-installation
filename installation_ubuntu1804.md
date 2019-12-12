@@ -2,7 +2,7 @@
 
 ### Installation
 
-#### base dependencies / libraries for faircoin daemon ( mandatory )
+#### Base dependencies / libraries for faircoin daemon ( mandatory )
 ~~~
 ###############################################################################
 # install base dependencies / libraries
@@ -20,7 +20,7 @@ sudo apt-get install -qy \
     libdb-dev
 ~~~
 
-#### additional libraries and dependencies for wallet and qt support ( optional )
+#### Additional libraries and dependencies for wallet and qt support ( optional )
 ~~~
 ###########################################################################################
 # install additional libraries and dependencies for wallet and qt support
@@ -71,13 +71,14 @@ sleep 60 && \
 sleep 10
 ~~~
 
-all binaries are in `~/faircoin-2/src`
+all binaries are in `~/faircoin-2/src` and `~/faircoin-2/src/qt`
 
 #### Create Aliases (optional)
 add this lines to ~/.bashrc
 ~~~
 alias faircoind="~/faircoin-2/src/faircoind"
 alias faircoin-cli="~/faircoin-2/src/faircoin-cli"
+alias faircoin-qt="~/faircoin-2/src/qt/faircoin-qt"
 ~~~
 reload configurations
 ~~~
