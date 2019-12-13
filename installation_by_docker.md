@@ -19,12 +19,27 @@ Everybody can build the faircoin deamon from source without to change the local 
 
 ### Installation
 
-#### Build Docker image ( without wallet )
-Build image for faircoin daemon to run a full node without usage of the wallet
+#### Build Docker image
+
+If you want to run a full node to support the network then select **build without wallet**
+
+If you want to run a cvn then select **build without wallet and with cvn**
+
+If you want to run a wallet then select **build with wallet**
+
+
 ~~~
 cd ~
 git clone https://github.com/fairchainsx/faircoin-2-installation
+
+### build without wallet ( full node only ) ###################################################################
 sudo docker build --no-cache -t faircoin-v92001-image - < ~/faircoin-2-installation/docker/Dockerfile_without_wallet
+
+### build without wallet and with cvn #########################################################################
+sudo docker build --no-cache --build-arg rule=cvn -t faircoin-v92001-image ~/faircoin-2-installation/docker/
+
+### build with wallet/qt ######################################################################################
+sudo docker build --no-cache --build-arg rule=wallet -t faircoin-v92001-image ~/faircoin-2-installation/docker/
 ~~~
 
 #### Run Docker container ( without wallet )

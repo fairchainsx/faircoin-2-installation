@@ -49,6 +49,9 @@ cd ~/faircoin-2
 # configure without wallet ###################################
 ./configure --disable-tests --disable-bench --disable-wallet
 
+# configure without wallet and with cvn ######################
+./configure --disable-tests --disable-bench --disable-wallet --with-cvn
+
 # configure with wallet/qt ###################################
 ./configure --disable-tests --disable-bench --with-incompatible-bdb
 
