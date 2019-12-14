@@ -7,7 +7,7 @@ ARG rule="daemon"
 # rule = cvn    => build without wallet/qt with cvn
 
 ###########################################################################################
-### install base libraries and dependencies for faircoin daemon
+### install base libraries and dependencies for faircoin daemon ###########################
 RUN apt-get update -q && \
     apt-get install -qy \
         git=1:2.17.1-1ubuntu0.5 \
@@ -22,7 +22,7 @@ RUN apt-get update -q && \
         libdb-dev=1:5.3.21~exp1ubuntu2
 
 ###########################################################################################
-### install additional libraries and dependencies for wallet and qt support
+### install additional libraries and dependencies for wallet and qt support ###############
 RUN if [ "$rule" = "wallet" ]; \
     then apt-get update -q && \
       apt-get install -qy \
@@ -39,13 +39,20 @@ RUN if [ "$rule" = "wallet" ]; \
 RUN apt-get install -qy nano=2.9.3-2
 
 ###########################################################################################
-### system cleanup
+### system cleanup ########################################################################
 RUN rm -rf /var/lib/apt/lists/* && \
     apt-get autoremove -y && \
     apt-get clean
 
 ###########################################################################################
-### download and build faircoin daemon and cli
+### create and run user account to image ##################################################
+RUN useradd --create-home --shell /bin/bash faircoin
+RUN chown faircoin /opt
+USER faircoin
+WORKDIR /home/faircoin
+
+###########################################################################################
+### download and build faircoin daemon and cli ############################################
 RUN cd /opt && \
     git clone https://github.com/fairchainsx/faircoin-2.git
 
@@ -58,12 +65,12 @@ RUN if [ "$rule" = "cvn" ]; then cd /opt/faircoin-2 && ./configure --disable-tes
 RUN cd /opt/faircoin-2 && make
 
 ###########################################################################################
-### create faircoin.conf ( change it if necessary and set another port or password )
-RUN mkdir /root/.faircoin2 && \
-    echo -e "rpcconnect=127.0.0.1\nrpcport=8332\nrpcuser=faircoin\nrpcpassword=mypassword\ntxindex=1" > /root/.faircoin2/faircoin.conf
+### create faircoin.conf ( change it if necessary and set another port or password ) ######
+RUN mkdir ~/.faircoin2 && \
+    echo -e "rpcconnect=127.0.0.1\nrpcport=8332\nrpcuser=faircoin\nrpcpassword=mypassword\ntxindex=1" > ~/.faircoin2/faircoin.conf
 
 ###########################################################################################
-### initialize blockchain with txindex=1
+### initialize blockchain with txindex=1 ##################################################
 RUN cd /opt/faircoin-2/src && \
     ./faircoind -daemon -reindex && \
     sleep 60 && \

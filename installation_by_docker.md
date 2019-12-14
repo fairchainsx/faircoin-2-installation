@@ -33,7 +33,7 @@ cd ~
 git clone https://github.com/fairchainsx/faircoin-2-installation
 
 ### build without wallet ( full node only ) ###################################################################
-sudo docker build --no-cache -t faircoin-v92001-image - < ~/faircoin-2-installation/docker/Dockerfile_without_wallet
+sudo docker build --no-cache -t faircoin-v92001-image ~/faircoin-2-installation/docker/
 
 ### build without wallet and with cvn #########################################################################
 sudo docker build --no-cache --build-arg rule=cvn -t faircoin-v92001-image ~/faircoin-2-installation/docker/
