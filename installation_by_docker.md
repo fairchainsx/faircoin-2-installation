@@ -52,6 +52,9 @@ add this lines to ~/.bashrc
 ~~~
 alias faircoind="sudo docker exec -it faircoin-v92001-container /opt/faircoin-2/src/faircoind"
 alias faircoin-cli="sudo docker exec -it faircoin-v92001-container /opt/faircoin-2/src/faircoin-cli"
+alias faircoin.start="sudo docker container start faircoin-v92001-container"
+alias faircoin.stop="faircoin-cli stop && sleep 10 && sudo docker container stop faircoin-v92001-container"
+alias faircoin.running="sudo docker inspect -f '{{.State.Running}}' faircoin-v92001-container"
 ~~~
 reload configurations
 ~~~
@@ -62,7 +65,13 @@ source ~/.bashrc
 
 #### Start container and faircoin deamon
 ~~~
-sudo docker container start faircoin-v92001-container && faircoind -daemon
+faircoin.start
+faircoind -daemon
+~~~
+
+#### Stop container and faircoin deamon ( f.e. before shutdown )
+~~~
+faircoin.stop
 ~~~
 
 #### Get commandline access
@@ -74,7 +83,7 @@ sudo docker attach faircoin-v92001-container
 
 If you want reboot the system or stop the container dont forget to stop the deamon before to be sure that all downloaded blockchain data will saved in the container!
 ~~~
-faircoin-cli stop
+faircoin.stop
 ~~~
 
 
