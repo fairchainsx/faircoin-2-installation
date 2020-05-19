@@ -1,0 +1,60 @@
+# Pull base image.
+FROM ubuntu:18.04@sha256:5f4bdc3467537cbbe563e80db2c3ec95d548a9145d64453b06939c4592d67b6d
+
+ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
+
+###########################################################################################
+### install base libraries and dependencies for faircoin daemon ###########################
+RUN apt-get update -q && \
+    apt-get install -qy \
+        git \
+        make \
+        autotools-dev \
+        autoconf \
+        libtool \
+        libssl-dev \
+        libboost-all-dev \
+        libevent-dev \
+        libdb++-dev \
+        libdb-dev
+
+###########################################################################################
+### install nano commandline editor [optional] ( to edit faircoin.conf later if necessary )
+RUN apt-get install -qy nano
+
+###########################################################################################
+### system cleanup ########################################################################
+RUN rm -rf /var/lib/apt/lists/* && \
+    apt-get autoremove -y && \
+    apt-get clean
+
+###########################################################################################
+### create and run user account to image ##################################################
+RUN useradd --create-home --shell /bin/bash fairchains
+COPY ./.fairchains /home/fairchains/.fairchains
+RUN chown -R fairchains:fairchains /home/fairchain/.fairchains
+USER fairchains
+
+###########################################################################################
+### download and build fairchains daemon and cli ############################################
+WORKDIR /home/fairchains
+RUN git clone https://github.com/FairChains/fairchains.git
+
+WORKDIR /home/fairchains/fairchains
+RUN ./autogen.sh && \
+    ./configure --disable-tests --disable-bench --with-incompatible-bdb --disable-wallet && \
+    make
+
+###########################################################################################
+### initialize blockchain with txindex=1 ##################################################
+WORKDIR /home/fairchains/fairchains/src
+RUN mv ./fairchainsd /home/fairchains/fairchainsd
+RUN mv ./fairchains-cli /home/fairchains/fairchains-cli
+
+WORKDIR /home/fairchains
+RUN ./fairchainsd -daemon -reindex && \
+    sleep 60 && \
+    ./fairchains-cli stop && \
+    sleep 10
+
+ENTRYPOINT ["./fairchainsd"]
