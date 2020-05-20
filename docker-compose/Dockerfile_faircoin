@@ -48,7 +48,7 @@ RUN ./autogen.sh && \
 
 ###########################################################################################
 ### initialize blockchain with txindex=1 ##################################################
-WORKDIR /home/faircoin/faircoin-2/src
+WORKDIR /home/faircoin/faircoin/src
 RUN mv ./faircoind /home/faircoin/faircoind
 RUN mv ./faircoin-cli /home/faircoin/faircoin-cli
 
