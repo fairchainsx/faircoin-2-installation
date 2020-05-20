@@ -15,11 +15,11 @@ https://docs.docker.com/compose/install/
 
 ## Configuration
 
-All configuration files are stored in the subfolder `.fairchains`
+All configuration files are stored in the subfolder `./docker-composite/.fairchains`
 
 If you run the faircoin services on a local machine then you can use the repositories configuration files.
 
-If you run the services on a webserver then it is very recommend to replace the ssl certificate and change the `rpcpassword` in the `faircoin.conf` / `fairchains.conf` !
+If you run the services on a webserver then it is very recommend to replace the ssl files ( .crt and .key ) and change the `rpcpassword` in the `faircoin.conf` / `fairchains.conf` !
 
 If you want to run the services for other fairchains then you need to replace the fairchains json files !
 
@@ -49,6 +49,28 @@ openssl genrsa -out electrumx.key 2048
 openssl req -new -key electrumx.key -out electrumx.csr
 openssl x509 -req -days 1825 -in electrumx.csr -signkey electrumx.key -out electrumx.crt
 ~~~
+
+### ElectrumX server
+
+If you want to make the server available on your webdomain then you need to adjust the `SERVICES` array in `./docker-compose/.fairchains/*.electrumx.json`
+
+local:
+~~~
+"SERVICES" : [
+    "rpc://127.0.0.1:8002",
+    "ssl://127.0.0.1:51812"
+]
+~~~
+
+remote ( example domain server.faircoin.co ):
+~~~
+"SERVICES" : [
+    "rpc://127.0.0.1:8002",
+    "ssl://server.faircoin.co:51812"
+]
+~~~
+
+more details you can find in the bitcoin electrumx docs: https://electrumx.readthedocs.io/en/latest/environment.html
 
 ## Installation and Usage
 
