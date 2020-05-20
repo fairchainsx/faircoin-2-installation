@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_faircoin
+      args:
+        source_repository: "https://github.com/fairchainsx/faircoin-2.git"
     container_name: FairCoin-2-V92001
     restart: always
 
@@ -17,6 +19,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_fairchains
+      args:
+        source_repository: "https://github.com/FairChains/fairchains.git"
     container_name: FairChains-V92000
     restart: always
 

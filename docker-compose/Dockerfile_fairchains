@@ -38,7 +38,8 @@ USER fairchains
 ###########################################################################################
 ### download and build fairchains daemon and cli ############################################
 WORKDIR /home/fairchains
-RUN git clone https://github.com/FairChains/fairchains.git
+ARG source_repository
+RUN git clone $source_repository /home/fairchains/fairchains
 
 WORKDIR /home/fairchains/fairchains
 RUN ./autogen.sh && \

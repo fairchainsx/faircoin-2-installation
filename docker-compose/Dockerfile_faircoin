@@ -38,9 +38,10 @@ USER faircoin
 ###########################################################################################
 ### download and build faircoin daemon and cli ############################################
 WORKDIR /home/faircoin
-RUN git clone https://github.com/fairchainsx/faircoin-2.git
+ARG source_repository
+RUN git clone $source_repository /home/faircoin/faircoin
 
-WORKDIR /home/faircoin/faircoin-2
+WORKDIR /home/faircoin/faircoin
 RUN ./autogen.sh && \
     ./configure --disable-tests --disable-bench --with-incompatible-bdb --disable-wallet && \
     make
