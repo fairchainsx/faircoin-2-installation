@@ -30,6 +30,7 @@
   ],
   "REPORT_SERVICES" :
   [
-      "ssl://electrum.faircoin.world:51812"
+      "ssl://electrum.faircoin.world:51812",
+      "ssl://server.faircoin.co:51812"
   ]
 }
