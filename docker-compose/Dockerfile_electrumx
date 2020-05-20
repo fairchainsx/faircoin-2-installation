@@ -1,0 +1,85 @@
+# Pull base image.
+FROM ubuntu:18.04@sha256:5f4bdc3467537cbbe563e80db2c3ec95d548a9145d64453b06939c4592d67b6d
+
+ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
+
+RUN apt-get update -q
+
+###########################################################################################
+### install base packages #################################################################
+RUN apt-get install -qy \
+  wget \
+  make \
+  autotools-dev \
+  autoconf \
+  build-essential \
+  zlib1g-dev \
+  git \
+  libffi-dev \
+  libssl-dev
+
+###########################################################################################
+### install python 3.7.4 ##################################################################
+RUN wget https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tgz
+
+RUN tar -xvf Python-3.7.4.tgz && \
+    cd Python-3.7.4 && \
+    ./configure && \
+    make && \
+    make install
+
+RUN python3 -m pip install --upgrade pip
+
+###########################################################################################
+### install python packages ###############################################################
+
+RUN python3 -m pip install \
+  aiorpcx \
+  attr \
+  plyvel \
+  pylru \
+  aiohttp
+
+RUN useradd --create-home --shell /bin/bash electrumx
+
+
+######################################################################
+# create SSL certificates and put it into ./.fairchains folder #######
+#  openssl genrsa -out electrumx.key 2048
+#  openssl req -new -key electrumx.key -out electrumx.csr
+#  openssl x509 -req -days 1825 -in electrumx.csr -signkey electrumx.key -out electrumx.crt
+
+COPY ./.fairchains /home/electrumx/.fairchains
+RUN chown electrumx:electrumx /home/electrumx/.fairchains
+
+USER electrumx
+WORKDIR /home/electrumx
+
+ENV SSL_CERTFILE=/home/electrumx/ssl/electrumx.crt
+ENV SSL_KEYFILE=/home/electrumx/ssl/electrumx.key
+
+######################################################################
+# create fairchains.conf by build arguments ##########################
+# ARG rpcconnect
+# ARG rpcport
+# ARG rpcuser
+# ARG rpcpassword
+# ARG netname
+
+ENV fairchains_path=/home/electrumx/.fairchains/
+ENV path_to_fairchains_json=/home/electrumx/.fairchains/$netname.electrumx.json
+ENV DB_DIRECTORY=/home/electrumx/.fairchains/$netname.electrumX
+
+ENV DAEMON_URL=$rpcuser:$rpcpassword@$rpcconnect:$rpcport
+ENV COIN=$netname
+ENV USER=electrumx
+
+######################################################################
+# Build and Install ElectrumFairChainsX
+RUN git clone https://github.com/fairchainsx/electrumfairchainsx.git
+
+WORKDIR /home/electrumx/electrumfairchainsx
+RUN python3 setup.py build
+
+WORKDIR /home/electrumx/electrumfairchainsx
+ENTRYPOINT ["./efcx_server"]

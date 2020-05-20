@@ -1,0 +1,45 @@
+version: "3.1"
+services:
+
+  faircoin:
+    build:
+      context: .
+      dockerfile: Dockerfile_faircoin
+    container_name: FairCoin-2-V92001
+    restart: always
+
+    network_mode: "host"
+
+    ports:
+      - "8332:8332"
+
+  fairchains:
+    build:
+      context: .
+      dockerfile: Dockerfile_fairchains
+    container_name: FairChains-V92000
+    restart: always
+
+    network_mode: "host"
+
+    ports:
+      - "8332:8332"
+
+  electrumx:
+    build:
+      context: .
+      dockerfile: Dockerfile_electrumx
+    env_file:
+      - ./.fairchains/fairchains.conf
+
+    container_name: FairChains-V92001-ElectrumX
+    restart: always
+
+    network_mode: "host"
+
+    ports:
+      - "8002:8002"
+      - "51812:51812"
+
+    depends_on:
+      - faircoin
