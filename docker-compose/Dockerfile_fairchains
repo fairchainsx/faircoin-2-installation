@@ -32,7 +32,7 @@ RUN rm -rf /var/lib/apt/lists/* && \
 ### create and run user account to image ##################################################
 RUN useradd --create-home --shell /bin/bash fairchains
 COPY ./.fairchains /home/fairchains/.fairchains
-RUN chown -R fairchains:fairchains /home/fairchain/.fairchains
+RUN chown -R fairchains:fairchains /home/fairchains/.fairchains
 USER fairchains
 
 ###########################################################################################
