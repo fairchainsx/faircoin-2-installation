@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile_faircoin
       args:
-        source_repository: "https://github.com/fairchainsx/faircoin-2.git"
+        source_repository: "https://github.com/faircoin/faircoin.git"
     container_name: FairCoin-2-V92001
     restart: always
 
