@@ -5,7 +5,7 @@ ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
 
 RUN apt-get update -q
 
-###########################################################################################
+#####################################################################################root##
 ### install base packages #################################################################
 RUN apt-get install -qy \
   wget \
@@ -18,7 +18,7 @@ RUN apt-get install -qy \
   libffi-dev \
   libssl-dev
 
-###########################################################################################
+#####################################################################################root##
 ### install python 3.7.4 ##################################################################
 RUN wget https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tgz
 
@@ -30,7 +30,7 @@ RUN tar -xvf Python-3.7.4.tgz && \
 
 RUN python3 -m pip install --upgrade pip
 
-###########################################################################################
+#####################################################################################root##
 ### install python packages ###############################################################
 
 RUN python3 -m pip install \
@@ -42,29 +42,19 @@ RUN python3 -m pip install \
 
 RUN useradd --create-home --shell /bin/bash electrumx
 
-
-######################################################################
-# create SSL certificates and put it into ./.fairchains folder #######
+USER electrumx
+################################################################################electrumx##
+# create SSL certificates and put it into ./.fairchains folder ############################
 #  openssl genrsa -out electrumx.key 2048
 #  openssl req -new -key electrumx.key -out electrumx.csr
 #  openssl x509 -req -days 1825 -in electrumx.csr -signkey electrumx.key -out electrumx.crt
-
-COPY ./.fairchains /home/electrumx/.fairchains
-RUN chown electrumx:electrumx /home/electrumx/.fairchains
-
-USER electrumx
 WORKDIR /home/electrumx
 
 ENV SSL_CERTFILE=/home/electrumx/ssl/electrumx.crt
 ENV SSL_KEYFILE=/home/electrumx/ssl/electrumx.key
 
-######################################################################
-# create fairchains.conf by build arguments ##########################
-# ARG rpcconnect
-# ARG rpcport
-# ARG rpcuser
-# ARG rpcpassword
-# ARG netname
+################################################################################electrumx##
+# create fairchains.conf by build arguments ###############################################
 
 ENV fairchains_path=/home/electrumx/.fairchains/
 ENV path_to_fairchains_json=/home/electrumx/.fairchains/$netname.electrumx.json
@@ -74,8 +64,8 @@ ENV DAEMON_URL=$rpcuser:$rpcpassword@$rpcconnect:$rpcport
 ENV COIN=$netname
 ENV USER=electrumx
 
-######################################################################
-# Build and Install ElectrumFairChainsX
+################################################################################electrumx##
+# Build and Install ElectrumFairChainsX ###################################################
 RUN git clone https://github.com/fairchainsx/electrumfairchainsx.git
 
 WORKDIR /home/electrumx/electrumfairchainsx

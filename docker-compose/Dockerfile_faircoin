@@ -3,7 +3,7 @@ FROM ubuntu:18.04@sha256:5f4bdc3467537cbbe563e80db2c3ec95d548a9145d64453b06939c4
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
 
-###########################################################################################
+#####################################################################################root##
 ### install base libraries and dependencies for faircoin daemon ###########################
 RUN apt-get update -q && \
     apt-get install -qy \
@@ -18,24 +18,27 @@ RUN apt-get update -q && \
         libdb++-dev \
         libdb-dev
 
-###########################################################################################
+#####################################################################################root##
 ### install nano commandline editor [optional] ( to edit faircoin.conf later if necessary )
 RUN apt-get install -qy nano
 
-###########################################################################################
+#####################################################################################root##
+### install python packages
+RUN apt-get install -qy python3-pip
+RUN python3 -m pip install python-bitcoinrpc
+
+#####################################################################################root##
 ### system cleanup ########################################################################
 RUN rm -rf /var/lib/apt/lists/* && \
     apt-get autoremove -y && \
     apt-get clean
 
-###########################################################################################
+#####################################################################################root##
 ### create and run user account to image ##################################################
 RUN useradd --create-home --shell /bin/bash faircoin
-COPY ./.fairchains /home/faircoin/.faircoin2
-RUN chown -R faircoin:faircoin /home/faircoin/.faircoin2
-USER faircoin
 
-###########################################################################################
+USER faircoin
+#################################################################################faircoin##
 ### download and build faircoin daemon and cli ############################################
 WORKDIR /home/faircoin
 ARG source_repository
@@ -46,7 +49,7 @@ RUN ./autogen.sh && \
     ./configure --disable-tests --disable-bench --with-incompatible-bdb --disable-wallet && \
     make
 
-###########################################################################################
+#################################################################################faircoin##
 ### initialize blockchain with txindex=1 ##################################################
 WORKDIR /home/faircoin/faircoin/src
 RUN mv ./faircoind /home/faircoin/faircoind

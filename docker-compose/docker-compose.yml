@@ -15,6 +15,11 @@ services:
     ports:
       - "8332:8332"
 
+    user: "1000:1000"
+
+    volumes:
+      - .faircoin2:/home/faircoin/.faircoin2
+
   fairchains:
     build:
       context: .
@@ -28,6 +33,11 @@ services:
 
     ports:
       - "8332:8332"
+
+    user: "1000:1000"
+
+    volumes:
+      - .fairchains:/home/fairchains/.fairchains
 
   electrumx:
     build:
