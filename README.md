@@ -15,7 +15,7 @@ https://docs.docker.com/compose/install/
 
 ## Configuration
 
-All configuration files are stored in the subfolder `./docker-composite/.fairchains`
+All configuration files are stored in the subfolder `./.fairchains`
 
 If you run the faircoin services on a local machine then you can use the repositories configuration files.
 
@@ -52,7 +52,7 @@ openssl x509 -req -days 1825 -in electrumx.csr -signkey electrumx.key -out elect
 
 ### ElectrumX server
 
-If you want to make the server available on your webdomain then you need to adjust the `SERVICES` array in `./docker-compose/.fairchains/*.electrumx.json`
+If you want to make the server available on your webdomain then you need to adjust the `SERVICES` array in `./.fairchains/*.electrumx.json`
 
 local:
 ~~~
@@ -78,7 +78,7 @@ At first download the faircoin installation repository.
 
 ~~~
 git clone https://github.com/fairchainsx/faircoin-2-installation.git
-cd faircoin-2-installation/docker-compose
+cd faircoin-2-installation
 ~~~
 
 #### Build and Start
